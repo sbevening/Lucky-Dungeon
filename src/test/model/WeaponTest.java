@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -46,5 +47,14 @@ class WeaponTest {
     public void toStringTest() {
         String expectedString = "Longsword - attack: 3. uses left: 3";
         assertEquals(expectedString, multiUseWeapon.toString());
+    }
+
+    @Test
+    public void toJsonTest() {
+        JSONObject weaponJson = multiUseWeapon.toJson();
+        assertEquals("weapon", weaponJson.getString("itemType"));
+        assertEquals("Longsword", weaponJson.getString("name"));
+        assertEquals(3, weaponJson.getInt("attack"));
+        assertEquals(3, weaponJson.getInt("usesRemaining"));
     }
 }

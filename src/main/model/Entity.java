@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 // abstract class for any entity in the game (player or enemy) with given
 // battle stats and name
 public abstract class Entity {
@@ -78,4 +81,15 @@ public abstract class Entity {
 
     @Override
     public abstract String toString();
+
+    // EFFECTS: returns JSON representation of this entity
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", name);
+        jsonObject.put("hitPoints", hitPoints);
+        jsonObject.put("defence", defence);
+        jsonObject.put("attack", attack);
+
+        return jsonObject;
+    }
 }

@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // a weapon that can be used against enemy entities or stored in
 // weapon inventory
 public class Weapon extends Item {
@@ -42,5 +44,16 @@ public class Weapon extends Item {
     @Override
     public String toString() {
         return name + " - attack: " + Integer.toString(attack) + ". uses left: " + Integer.toString(usesRemaining);
+    }
+
+    // EFFECTS: produces string representation of weapon
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("itemType", "weapon");
+        jsonObject.put("name", name);
+        jsonObject.put("attack", attack);
+        jsonObject.put("usesRemaining", usesRemaining);
+        return jsonObject;
     }
 }

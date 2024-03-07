@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,13 +53,24 @@ public class InventoryTest {
     }
 
     @Test
-    public void constructorTest() {
+    public void constructorNoItemsTest() {
         assertEquals(3, empty.getSlots());
         assertEquals(0, empty.getItems().size());
     }
 
     @Test
-    public void pickUpItemTest() {
+    public void constructorWithItemsTest() {
+        ArrayList<Item> items = new ArrayList<Item>();
+        items.add(weapon1);
+        items.add(armor1);
+        Inventory inventory = new Inventory(4, items);
+        assertEquals(4, inventory.getSlots());
+        assertEquals(weapon1, inventory.getItemAt(0));
+        assertEquals(armor1, inventory.getItemAt(1));
+    }
+
+    @Test
+    public void pickUpItemTestNotNull() {
         assertTrue(empty.pickUpItem(weapon1));
         assertEquals(weapon1, empty.getItemAt(0));
         assertEquals(1, empty.getItems().size());
@@ -70,6 +83,12 @@ public class InventoryTest {
         assertEquals(weapon1, almostFull.getItemAt(5));
 
         assertFalse(completelyFull.pickUpItem(weapon3));
+    }
+
+    @Test
+    public void pickUpItemTestNull() {
+        assertEquals(false, empty.pickUpItem(null));
+        assertEquals(0, empty.getItems().size());
     }
 
     @Test
@@ -144,5 +163,27 @@ public class InventoryTest {
         weaponsOnly.pickUpItem(weapon1);
         weaponsOnly.pickUpItem(weapon2);
         assertEquals(0, weaponsOnly.getArmor().size());
+    }
+
+    @Test
+    public void toJsonTestEmpty() {
+        JSONObject inventoryJson = empty.toJson();
+        assertEquals(0, inventoryJson.getJSONArray("items").length());
+        assertEquals(3, inventoryJson.getInt("slots"));
+    }
+
+    @Test
+    public void toJsonTestHasItems() {
+        JSONObject inventoryJson = halfFull.toJson();
+        JSONArray itemsJson = inventoryJson.getJSONArray("items");
+        assertEquals(3, itemsJson.length());
+
+        JSONObject weaponJson = itemsJson.getJSONObject(0);
+        assertEquals("Throwing Knife", weaponJson.getString("name"));
+        assertEquals(1, weaponJson.getInt("attack"));
+        assertEquals(1, weaponJson.getInt("usesRemaining"));
+        JSONObject armorJson = itemsJson.getJSONObject(1);
+        assertEquals("Iron Armor", armorJson.getString("name"));
+        assertEquals(2, armorJson.getInt("defence"));
     }
 }

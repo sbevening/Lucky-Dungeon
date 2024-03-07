@@ -1,0 +1,34 @@
+{
+    "enemy": {
+        "defence": 0,
+        "attack": 2,
+        "name": "Soldier",
+        "hitPoints": 4,
+        "loot": [{
+            "itemType": "armor",
+            "defence": 1,
+            "name": "Chainmail Armor"
+        }]
+    },
+    "player": {
+        "defence": 0,
+        "equippedWeapon": {
+            "itemType": "weapon",
+            "attack": 2,
+            "name": "Dagger",
+            "usesRemaining": 10
+        },
+        "attack": 2,
+        "name": "Player",
+        "equippedArmor": {
+            "itemType": "armor",
+            "defence": 0,
+            "name": "T-Shirt"
+        },
+        "hitPoints": 20,
+        "inventory": {
+            "slots": 6,
+            "items": []
+        }
+    }
+}

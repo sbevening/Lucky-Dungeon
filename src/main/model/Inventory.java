@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.JsonWriter;
+
 import java.util.ArrayList;
 
 // inventory containing a list of weapons and armor collected
@@ -14,6 +18,14 @@ public class Inventory {
     public Inventory(int slots) {
         this.slots = slots;
         items = new ArrayList<Item>();
+    }
+
+    // REQUIRES: 1 <= slots <= 10 and items.size() <= slots
+    // EFFECTS: creates inventory with set amount of inventory
+    // slots holding given list of items
+    public Inventory(int slots, ArrayList<Item> items) {
+        this.slots = slots;
+        this.items = items;
     }
 
     public int getSlots() {
@@ -56,9 +68,12 @@ public class Inventory {
 
     // MODIFIES: this
     // EFFECTS: if there is enough space (items.size() < slots), adds an item to inventory and
-    // returns true; otherwise, returns false and does not modify this
+    // returns true; otherwise, returns false and does not modify this. if item is null, returns
+    // false and does not modify this.
     public boolean pickUpItem(Item item) {
         if (items.size() >= slots) {
+            return false;
+        } else if (item == null) {
             return false;
         } else {
             items.add(item);
@@ -89,5 +104,19 @@ public class Inventory {
         }
 
         return outputString;
+    }
+
+    // EFFECTS: produces string representation of inventory
+    public JSONObject toJson() {
+        JSONArray itemsJson = new JSONArray();
+        for (Item item : items) {
+            itemsJson.put(item.toJson());
+        }
+
+        JSONObject inventoryJson = new JSONObject();
+        inventoryJson.put("slots", slots);
+        inventoryJson.put("items", itemsJson);
+
+        return inventoryJson;
     }
 }

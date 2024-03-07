@@ -5,15 +5,26 @@ import model.Enemy;
 import model.Weapon;
 import model.Armor;
 import model.Item;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 // class to represent mechanics of the game and actively output game information to console
 public class Game {
+    private String JSON_STORE = "./data/game.json";
     private Player player;
     private Enemy currentEnemy;
-    private  ArrayList<Enemy> enemyList;
+    private ArrayList<Enemy> enemyList;
 
     private int startHitpoints = 20;
     private int inventorySlots = 6;
@@ -72,7 +83,7 @@ public class Game {
         enemyList.add(new Enemy("Rich Troll", 4, 0, 2, new Item[]{dagger}));
         enemyList.add(new Enemy("Ninja", 5, 0, 3, new Item[]{katana}));
         enemyList.add(new Enemy("Knight", 5, 1, 2, new Item[]{broadsword}));
-        enemyList.add(new Enemy("Dragon", 10, 1, 4, new Item[]{dragonSlayer}));
+        enemyList.add(new Enemy("Dragon", 5, 1, 3, new Item[]{dragonSlayer}));
         enemyList.add(new Enemy("Soldier", 4, 0, 2, new Item[]{chainmailArmor}));
         enemyList.add(new Enemy("Skeleton", 1, 0, 1, new Item[]{leatherArmor}));
         enemyList.add(new Enemy("Zombie", 4, 0, 2, new Item[]{ironArmor, dagger}));
@@ -127,7 +138,7 @@ public class Game {
         System.out.println(
                 "Type the number beside an option to select it." + "\n- View Inventory [0]\n" + "- Change Weapon [1]\n"
                         + "- Change Armor [2]\n" + "- My Information [3]\n" + "- Enemy Information [4]\n"
-                        + "- Drop Item [5]\n" + "- Attack Enemy [6]\n" + "- Quit [7]");
+                        + "- Drop Item [5]\n" + "- Attack Enemy [6]\n" + "- Save Game [7]\n" + "- Load Game [8]");
         String userInput = takeScannerInput();
 
         switch (userInput) {
@@ -154,11 +165,50 @@ public class Game {
                 return makePlayerHit();
                 // no recursive call, will always terminate with a call resulting in a string reporting attack
             case "7":
-                System.exit(0);
+                Boolean didSave = saveGame(JSON_STORE);
+                if (didSave) {
+                    System.out.println("Saved game to: " + JSON_STORE);
+                } else {
+                    System.out.println("Unable to write to file: " + JSON_STORE);
+                }
+                return makePlayerMove();
+            case "8":
+                JsonReader reader = new JsonReader(JSON_STORE);
+                try {
+                    reader.generatePlayerAndEnemy();
+                    player = reader.getPlayer();
+                    currentEnemy = reader.getEnemy();
+                    System.out.println("Loaded save from file: " + JSON_STORE);
+                } catch (IOException e) {
+                    System.out.println("Unable to save to file: " + JSON_STORE);
+                }
+                return makePlayerMove();
             default:
                 System.out.println("INVALID INPUT.\nPlease enter a number between 0 and 7.\n");
                 return makePlayerMove();
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: saves player and enemy as json to destination file. returns true if save was successful, false if
+    // a FileNotFoundException occurs
+    public Boolean saveGame(String destination) {
+        try {
+            JsonWriter writer = new JsonWriter(destination);
+            writer.initializeWriter();
+            writer.write(player, currentEnemy);
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads player and enemy json from file and sets them as player and enemy. returns true if game
+    // is successfully loaded. else false.
+    public Boolean loadGame() {
+        JsonReader reader = new JsonReader(JSON_STORE);
+        return true;
     }
 
     // MODIFIES: this

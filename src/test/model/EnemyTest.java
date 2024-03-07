@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -97,5 +99,22 @@ public class EnemyTest {
         String defString = "\nDefence: " + 0;
         String titleString = "\nEnemy Stats";
         assertEquals(titleString + nameString + hpString + atkString + defString, noLootEnemy.toString());
+    }
+
+    @Test
+    public void toJsonTest() {
+        JSONObject enemyJson = multipleLootEnemy.toJson();
+        assertEquals("Dragon", enemyJson.getString("name"));
+        assertEquals(0, enemyJson.getInt("defence"));
+        assertEquals(15, enemyJson.getInt("hitPoints"));
+        assertEquals(7, enemyJson.getInt("attack"));
+
+        JSONArray lootArray = enemyJson.getJSONArray("loot");
+        JSONObject weaponJson = lootArray.getJSONObject(0);
+        assertEquals(weapon1.getName(), weaponJson.getString("name"));
+        assertEquals(weapon1.getAttack(), weaponJson.getInt("attack"));
+        JSONObject armorJson = lootArray.getJSONObject(1);
+        assertEquals(armor1.getName(), armorJson.getString("name"));
+        assertEquals(armor1.getDefence(), armorJson.getInt("defence"));
     }
 }

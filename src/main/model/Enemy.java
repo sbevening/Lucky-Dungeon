@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Enemy extends Entity {
     private Item[] loot;
 
@@ -28,5 +31,17 @@ public class Enemy extends Entity {
         String attackString = "\nAttack: " + getAttack();
         String defenceString = "\nDefence: " + getDefence();
         return "\nEnemy Stats" + nameString + hpString + attackString + defenceString;
+    }
+
+    // EFFECTS: produces json representation of enemy
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        JSONArray lootJson = new JSONArray();
+        for (Item item : loot) {
+            lootJson.put(item.toJson());
+        }
+        jsonObject.put("loot", lootJson);
+        return jsonObject;
     }
 }

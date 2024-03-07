@@ -1,0 +1,47 @@
+{
+    "enemy": {
+        "defence": 4,
+        "attack": 5,
+        "name": "Goblin",
+        "hitPoints": 2,
+        "loot": [{
+            "itemType": "weapon",
+            "attack": 1,
+            "name": "Stick",
+            "usesRemaining": 2
+        }]
+    },
+    "player": {
+        "defence": 0,
+        "equippedWeapon": {
+            "itemType": "weapon",
+            "attack": 3,
+            "name": "Sword",
+            "usesRemaining": 4
+        },
+        "attack": 3,
+        "name": "Player",
+        "equippedArmor": {
+            "itemType": "armor",
+            "defence": 0,
+            "name": "T-Shirt"
+        },
+        "hitPoints": 5,
+        "inventory": {
+            "slots": 4,
+            "items": [
+                {
+                    "itemType": "weapon",
+                    "attack": 6,
+                    "name": "Club",
+                    "usesRemaining": 2
+                },
+                {
+                    "itemType": "armor",
+                    "defence": 1,
+                    "name": "Chainmail"
+                }
+            ]
+        }
+    }
+}

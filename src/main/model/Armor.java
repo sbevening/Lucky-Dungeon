@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // armor to be equipped by player or stored in armor inventory
 // that absorbs damage in combat
 public class Armor extends Item {
@@ -21,5 +23,15 @@ public class Armor extends Item {
     @Override
     public String toString() {
         return name + " - defence: " + Integer.toString(defence);
+    }
+
+    // EFFECTS: produces json representation of armor
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("itemType", "armor");
+        jsonObject.put("name", name);
+        jsonObject.put("defence", defence);
+        return jsonObject;
     }
 }

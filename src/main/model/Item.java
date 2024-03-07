@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // Abstract class for an item to be held within an Inventory
 public abstract class Item {
     protected String name;
@@ -16,4 +18,6 @@ public abstract class Item {
 
     @Override
     public abstract String toString();
+
+    public abstract JSONObject toJson();
 }

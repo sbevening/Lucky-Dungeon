@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 // player class used to represent state of player in game with given hitpoints, inventory,
 // and equipped gear
 public class Player extends Entity {
@@ -8,7 +12,7 @@ public class Player extends Entity {
     private Inventory inventory;
 
     // REQUIRES: hp > 0 and inventorySlots > 0
-    // EFFECTS: creates a player instance with given hitpoints, given
+    // EFFECTS: creates a player instance with given name, hitpoints, given
     // inventory slots, and basic armor and weapon
     public Player(String name, int hp, int inventorySlots) {
         // attack is set to Dagger's attack; defence is set to T-Shirt's defence
@@ -18,8 +22,28 @@ public class Player extends Entity {
         inventory = new Inventory(inventorySlots);
     }
 
+    // REQUIRES: hp > 0
+    // EFFECTS: creates a player instance with given name, hitpoints, inventory,
+    // null equipped weapon, and basic armor
+    public Player(String name, int hp, Inventory inventory) {
+        // attack is set to 0 and defence is set to 0 because nothing equipped
+        super(name, hp, 0, 0);
+        equippedArmor = new Armor("T-Shirt", 0);
+        equippedWeapon = null;
+        this.inventory = inventory;
+    }
+
     public Armor getEquippedArmor() {
         return equippedArmor;
+    }
+
+    // REQUIRES: armor != null
+    // MODIFIES: this
+    // EFFECTS: sets equipped armor to given armor piece and defence to armor's defence with no
+    // interactions with inventory. overwrites previous armor and does not add it to inventory.
+    public void setEquippedArmor(Armor armor) {
+        equippedArmor = armor;
+        setDefence(armor.getDefence());
     }
 
     // REQUIRES: armor is in inventory.getItems()
@@ -37,6 +61,19 @@ public class Player extends Entity {
 
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets equipped weapon to given weapon with no interactions with
+    // inventory. overwrites previous weapon and does not add it to inventory.
+    // sets attack to weapon's attack or 0 if weapon is null
+    public void setEquippedWeapon(Weapon weapon) {
+        equippedWeapon = weapon;
+        if (weapon == null) {
+            setAttack(0);
+        } else {
+            setAttack(weapon.getAttack());
+        }
     }
 
     // REQUIRES: weapon is in inventory.getItems()
@@ -66,10 +103,15 @@ public class Player extends Entity {
     // EFFECTS: returns string representation of player and all of its relevant fields
     @Override
     public String toString() {
+        String weaponString;
         String hpString = "\nHitpoints: " + Integer.toString(getHitPoints());
-        String weaponString = "\nEquipped Weapon: " + getEquippedWeapon().toString();
+        if (equippedWeapon != null) {
+            weaponString = "\nEquipped Weapon: " + getEquippedWeapon().toString();
+        } else {
+            weaponString = "\nNo weapon equipped";
+        }
         String armorString = "\nEquipped Armor: " + getEquippedArmor().toString();
-        return "\nPlayer Stats" + hpString  + weaponString + armorString;
+        return "\nPlayer Stats" + hpString + weaponString + armorString;
     }
 
     // MODIFIES: other
@@ -83,5 +125,20 @@ public class Player extends Entity {
         Boolean enemyDied = super.hitEntity(other);
         equippedWeapon.decrementUses();
         return enemyDied;
+    }
+
+    // EFFECTS: produces json representation of player
+    @Override
+    public JSONObject toJson() {
+        JSONObject jsonObject = super.toJson();
+        jsonObject.put("equippedArmor", equippedArmor.toJson());
+        if (equippedWeapon != null) {
+            jsonObject.put("equippedWeapon", equippedWeapon.toJson());
+        } else {
+            jsonObject.put("equippedWeapon", JSONObject.NULL);
+        }
+        jsonObject.put("inventory", inventory.toJson());
+
+        return jsonObject;
     }
 }

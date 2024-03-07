@@ -33,3 +33,5 @@ interesting battles that lend to replayability.
 - As a user, I want to be able to battle an enemy until either myself or them runs out of hitpoints.
 - As a user, I want to be able to view the different stats (defence, attack, and hitpoints) of
   myself and enemies.
+- As a user, I want to be given the option to load a save game from a file while playing.
+- As a user, I want to be given the option to save my game to a file while playing.
