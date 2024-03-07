@@ -1,0 +1,47 @@
+{
+    "enemy": {
+        "defence": 1,
+        "attack": 3,
+        "name": "Dragon",
+        "hitPoints": 5,
+        "loot": [{
+            "itemType": "weapon",
+            "attack": 10,
+            "name": "Dragon Slayer",
+            "usesRemaining": 10
+        }]
+    },
+    "player": {
+        "defence": 0,
+        "equippedWeapon": {
+            "itemType": "weapon",
+            "attack": 2,
+            "name": "Dagger",
+            "usesRemaining": 10
+        },
+        "attack": 2,
+        "name": "Player",
+        "equippedArmor": {
+            "itemType": "armor",
+            "defence": 0,
+            "name": "T-Shirt"
+        },
+        "hitPoints": 20,
+        "inventory": {
+            "slots": 6,
+            "items": [
+              {
+                "itemType": "weapon",
+                "attack": 6,
+                "name": "Club",
+                "usesRemaining": 2
+              },
+              {
+                "itemType": "armor",
+                "defence": 1,
+                "name": "Chainmail"
+              }
+            ]
+        }
+    }
+}

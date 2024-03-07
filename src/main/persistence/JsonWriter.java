@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 // Class with functionality to write JSON representations of a player and enemy to file
 public class JsonWriter {
-    private int TAB = 4;
+    private static final int TAB = 4;
     private PrintWriter writer;
     private String destination;
 

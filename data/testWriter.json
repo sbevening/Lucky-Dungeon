@@ -13,13 +13,8 @@
     },
     "player": {
         "defence": 0,
-        "equippedWeapon": {
-            "itemType": "weapon",
-            "attack": 3,
-            "name": "Sword",
-            "usesRemaining": 4
-        },
-        "attack": 3,
+        "equippedWeapon": null,
+        "attack": 0,
         "name": "Player",
         "equippedArmor": {
             "itemType": "armor",

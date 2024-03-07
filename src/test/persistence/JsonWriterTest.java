@@ -71,6 +71,23 @@ public class JsonWriterTest {
         }
     }
 
+    @Test
+    public void writerNullWeaponTest() {
+        try {
+            player.setEquippedWeapon(null);
+            JsonWriter writer = new JsonWriter("./data/testWriter.json");
+            writer.initializeWriter();
+            writer.write(player, enemy);
+
+            JsonReader reader = new JsonReader("./data/testWriter.json");
+            reader.generatePlayerAndEnemy();
+            Player parsedPlayer = reader.getPlayer();
+            assertNull(parsedPlayer.getEquippedWeapon());
+        } catch (IOException e) {
+            fail("Unexpected IOException thrown");
+        }
+    }
+
     // EFFECTS: determines if two players are equal by value
     private boolean playersStatsEqual(Player player1, Player player2) {
         Boolean equalNames = player1.getName().equals(player2.getName());

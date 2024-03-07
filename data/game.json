@@ -1,13 +1,14 @@
 {
     "enemy": {
         "defence": 0,
-        "attack": 2,
-        "name": "Soldier",
-        "hitPoints": 4,
+        "attack": 1,
+        "name": "Baby Troll",
+        "hitPoints": 1,
         "loot": [{
-            "itemType": "armor",
-            "defence": 1,
-            "name": "Chainmail Armor"
+            "itemType": "weapon",
+            "attack": 1,
+            "name": "Stick",
+            "usesRemaining": 5
         }]
     },
     "player": {
@@ -16,7 +17,7 @@
             "itemType": "weapon",
             "attack": 2,
             "name": "Dagger",
-            "usesRemaining": 10
+            "usesRemaining": 7
         },
         "attack": 2,
         "name": "Player",
@@ -25,10 +26,22 @@
             "defence": 0,
             "name": "T-Shirt"
         },
-        "hitPoints": 20,
+        "hitPoints": 16,
         "inventory": {
             "slots": 6,
-            "items": []
+            "items": [
+                {
+                    "itemType": "armor",
+                    "defence": 2,
+                    "name": "Iron Armor"
+                },
+                {
+                    "itemType": "weapon",
+                    "attack": 1,
+                    "name": "Dagger",
+                    "usesRemaining": 10
+                }
+            ]
         }
     }
 }

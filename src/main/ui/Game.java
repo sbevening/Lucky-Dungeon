@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 
 // class to represent mechanics of the game and actively output game information to console
 public class Game {
-    private String JSON_STORE = "./data/game.json";
+    private static final String JSON_STORE = "./data/game.json";
     private Player player;
     private Enemy currentEnemy;
     private ArrayList<Enemy> enemyList;
