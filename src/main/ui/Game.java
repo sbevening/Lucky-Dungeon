@@ -5,29 +5,23 @@ import model.Enemy;
 import model.Weapon;
 import model.Armor;
 import model.Item;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 // class to represent mechanics of the game and actively output game information to console
 public class Game {
     private static final String JSON_STORE = "./data/game.json";
     private Player player;
     private Enemy currentEnemy;
-    private ArrayList<Enemy> enemyList;
+    private final ArrayList<Enemy> enemyList;
 
-    private int startHitpoints = 20;
-    private int inventorySlots = 6;
+    private static final int START_HITPOINTS = 20;
+    private static final int INVENTORY_SLOTS = 6;
 
     // EFFECTS: prompts user to start game; instantiates game and initializes starting fields in it
     public Game() {
@@ -35,20 +29,20 @@ public class Game {
         System.out.println(titleString);
         takeScannerInput();
         System.out.println("You enter a really creepy dungeon... \n\n");
-        player = new Player("Player", startHitpoints, inventorySlots);
-        initializeEnemyList();
+        player = new Player("Player", START_HITPOINTS, INVENTORY_SLOTS);
+        EnemyListGenerator enemyListGenerator = new EnemyListGenerator();
+        enemyList = enemyListGenerator.getEnemyList();
         selectEnemy();
     }
 
     private String takeScannerInput() {
         Scanner scanner = new Scanner(System.in);
-        String scannerInput = scanner.nextLine();
-        return scannerInput;
+        return scanner.nextLine();
     }
 
     // MODIFIES: this
-    // EFFECTS: selects random enemy from list of all enemies and sets it to
-    // current enemy and also returns name of that entity
+    // EFFECTS: selects random enemy from list of all enemies, generates shallow copy of it,
+    // and assigns it to currentEnemy. also returns name of that entity
     private String selectEnemy() {
         int randomIndex = (int) (Math.random() * enemyList.size());
         // enemies can be reused so make a template and shallow copy
@@ -63,33 +57,6 @@ public class Game {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes enemy list with all enemies in the game
-    private void initializeEnemyList() {
-        enemyList = new ArrayList<Enemy>();
-
-        Weapon broadsword = new Weapon("Broadsword", 3, 7);
-        Weapon dagger = new Weapon("Dagger", 1, 10);
-        Weapon katana = new Weapon("Katana", 4, 8);
-        Weapon stick = new Weapon("Stick", 1, 5);
-        Weapon club = new Weapon("Club", 6, 5);
-        Weapon dragonSlayer = new Weapon("Dragon Slayer", 10, 10);
-
-        Armor leatherArmor = new Armor("Leather Armor", 0);
-        Armor chainmailArmor = new Armor("Chainmail Armor", 1);
-        Armor ironArmor = new Armor("Iron Armor", 2);
-
-        enemyList.add(new Enemy("Baby Troll", 3, 0, 1, new Item[]{stick}));
-        enemyList.add(new Enemy("Troll", 6, 0, 2, new Item[]{club}));
-        enemyList.add(new Enemy("Rich Troll", 4, 0, 2, new Item[]{dagger}));
-        enemyList.add(new Enemy("Ninja", 5, 0, 3, new Item[]{katana}));
-        enemyList.add(new Enemy("Knight", 5, 1, 2, new Item[]{broadsword}));
-        enemyList.add(new Enemy("Dragon", 5, 1, 3, new Item[]{dragonSlayer}));
-        enemyList.add(new Enemy("Soldier", 4, 0, 2, new Item[]{chainmailArmor}));
-        enemyList.add(new Enemy("Skeleton", 1, 0, 1, new Item[]{leatherArmor}));
-        enemyList.add(new Enemy("Zombie", 4, 0, 2, new Item[]{ironArmor, dagger}));
-    }
-
-    // MODIFIES: this
     // EFFECTS: starts the game loop. gives game over message
     // once player drops to 0 health and calls run on new instance
     // of game to start fresh game loop.
@@ -101,7 +68,6 @@ public class Game {
 
             // if enemy dies
             if (currentEnemy.getHitPoints() <= 0) {
-                String enemyName = currentEnemy.getName();
                 System.out.println("You move forward through the dungeon...\n");
                 if (currentEnemy.dropsLoot()) {
                     System.out.println(collectLoot(currentEnemy.getLoot()));
@@ -126,7 +92,7 @@ public class Game {
     private String makeEnemyMove() {
         currentEnemy.hitEntity(player);
         int newHitpoints = player.getHitPoints();
-        return currentEnemy.getName() + " attacks!\nYour hitpoints drop to " + Integer.toString(newHitpoints) + ".\n";
+        return currentEnemy.getName() + " attacks!\nYour hitpoints drop to " + newHitpoints + ".\n";
     }
 
     // MODIFIES: this
@@ -173,19 +139,30 @@ public class Game {
                 }
                 return makePlayerMove();
             case "8":
-                JsonReader reader = new JsonReader(JSON_STORE);
-                try {
-                    reader.generatePlayerAndEnemy();
-                    player = reader.getPlayer();
-                    currentEnemy = reader.getEnemy();
-                    System.out.println("Loaded save from file: " + JSON_STORE);
-                } catch (IOException e) {
-                    System.out.println("Unable to save to file: " + JSON_STORE);
+                if (loadGame()) {
+                    System.out.println("Loaded game from: " + JSON_STORE);
+                } else {
+                    System.out.println("Could not load game from: " + JSON_STORE);
                 }
                 return makePlayerMove();
             default:
                 System.out.println("INVALID INPUT.\nPlease enter a number between 0 and 7.\n");
                 return makePlayerMove();
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads player and enemy states from given file if file can be opened. returns true if file was
+    // successfully read from; false otherwise
+    private boolean loadGame() {
+        JsonReader reader = new JsonReader(JSON_STORE);
+        try {
+            reader.generatePlayerAndEnemy();
+            player = reader.getPlayer();
+            currentEnemy = reader.getEnemy();
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
 
@@ -204,14 +181,6 @@ public class Game {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads player and enemy json from file and sets them as player and enemy. returns true if game
-    // is successfully loaded. else false.
-    public Boolean loadGame() {
-        JsonReader reader = new JsonReader(JSON_STORE);
-        return true;
-    }
-
-    // MODIFIES: this
     // EFFECTS: makes player attack current enemy and decreases their health if a weapon is equipped
     // and returns information string on attack. if no weapon is equipped, returns a no damage dealt message.
     public String makePlayerHit() {
@@ -225,7 +194,7 @@ public class Game {
                 player.equipWeapon(null);
             }
             return "You attack " + currentEnemy.getName() + ", reducing their health to "
-                    + Integer.toString(currentEnemy.getHitPoints()) + "\n";
+                    + currentEnemy.getHitPoints() + "\n";
         }
     }
 
@@ -233,18 +202,18 @@ public class Game {
     // MODIFIES: this
     // EFFECTS: attempts to pick up loot. returns string report of loot found.
     private String collectLoot(Item[] loot) {
-        String outputString = "";
+        StringBuilder outputString = new StringBuilder();
         for (Item item : loot) {
             if (player.getInventory().pickUpItem(item)) {
                 // if item is successfully picked up
-                outputString += ("You found a " + item.getName() + " and add it to your inventory\n");
+                outputString.append("You found a ").append(item.getName()).append(" and add it to your inventory\n");
             } else {
                 // if no space for item
-                outputString += (item.getName() + " was dropped but your inventory is full!\n");
+                outputString.append(item.getName()).append(" was dropped but your inventory is full!\n");
             }
         }
 
-        return outputString;
+        return outputString.toString();
     }
 
     // MODIFIES: this
