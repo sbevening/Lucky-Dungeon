@@ -1,30 +1,53 @@
 {
     "enemy": {
         "defence": 0,
-        "attack": 2,
-        "name": "Rich Troll",
-        "hitPoints": 2,
+        "attack": 1,
+        "name": "Baby Troll",
+        "hitPoints": 1,
         "loot": [{
             "itemType": "weapon",
             "attack": 1,
-            "name": "Dagger",
-            "usesRemaining": 10
+            "name": "Stick",
+            "usesRemaining": 5
         }]
     },
     "player": {
         "defence": 0,
-        "equippedWeapon": null,
-        "attack": 0,
+        "equippedWeapon": {
+            "itemType": "weapon",
+            "attack": 2,
+            "name": "Dagger",
+            "usesRemaining": 4
+        },
+        "attack": 2,
         "name": "Player",
         "equippedArmor": {
             "itemType": "armor",
             "defence": 0,
             "name": "T-Shirt"
         },
-        "hitPoints": 16,
+        "hitPoints": 11,
         "inventory": {
             "slots": 6,
-            "items": []
+            "items": [
+                {
+                    "itemType": "armor",
+                    "defence": 2,
+                    "name": "Iron Armor"
+                },
+                {
+                    "itemType": "weapon",
+                    "attack": 1,
+                    "name": "Dagger",
+                    "usesRemaining": 10
+                },
+                {
+                    "itemType": "weapon",
+                    "attack": 4,
+                    "name": "Katana",
+                    "usesRemaining": 8
+                }
+            ]
         }
     }
 }

@@ -35,3 +35,16 @@ interesting battles that lend to replayability.
   myself and enemies.
 - As a user, I want to be given the option to load a save game from a file while playing.
 - As a user, I want to be given the option to save my game to a file while playing.
+
+## Instructions for Grader ##
+
+- You can generate the first required action related to the user story "adding multiple Xs to a Y" by clicking the
+  "ATTACK ENEMY" button until an enemy is killed to obtain its loot (which is added to the inventory) and then selecting
+  an item by clicking on it in the top panel (cannot be an empty slot) and pressing the "DROP ITEM" button to remove it
+  from the inventory.
+- You can generate the second required action related to the user story "adding multiple Xs to a Y" by clicking on
+  an item in the inventory (cannot be an empty slot) to select it and then click the "EQUIP ITEM" button in order to
+  equip a given piece of armor or a weapon and put the previously equipped item into the inventory 
+- You can locate my visual component by starting the application as it is shown as a splash screen upon launch.
+- You can save the state of my application by clicking on the button labelled "Save Game" while playing the game.
+- You can load a saved application state by clicking on the button labelled "Load Game" while playing the game.

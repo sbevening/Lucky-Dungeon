@@ -115,8 +115,7 @@ public class Player extends Entity {
     }
 
     // MODIFIES: other
-    // EFFECTS: attacks other entity with equipped weapon. if no weapon equipped, returns false
-    // and does not modify other. returns true if other dies; returns false otherwise
+    // EFFECTS: attacks other entity with equipped weapon. returns true if other dies; returns false otherwise
     @Override
     public Boolean hitEntity(Entity other) {
         if (equippedWeapon == null) {
