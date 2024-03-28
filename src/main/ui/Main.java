@@ -1,5 +1,8 @@
 package ui;
 
+import ui.panels.GamePanel;
+import ui.panels.SplashScreenPanel;
+
 import javax.swing.*;
 
 // Main class; displays splash screen and then instantiates and runs Game

@@ -2,8 +2,6 @@ package model;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 // player class used to represent state of player in game with given hitpoints, inventory,
 // and equipped gear
 public class Player extends Entity {

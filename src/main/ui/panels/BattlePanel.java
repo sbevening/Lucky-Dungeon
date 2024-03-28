@@ -1,8 +1,6 @@
-package ui;
+package ui.panels;
 
 import ui.Game;
-import ui.GamePanel;
-import ui.Refreshable;
 
 import javax.swing.*;
 import java.awt.*;

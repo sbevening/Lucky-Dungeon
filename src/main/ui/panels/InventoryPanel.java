@@ -1,9 +1,10 @@
-package ui;
+package ui.panels;
 
 import model.Armor;
 import model.Inventory;
 import model.Item;
 import model.Weapon;
+import ui.Game;
 
 import javax.swing.*;
 import java.awt.*;

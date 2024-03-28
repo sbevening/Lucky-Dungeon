@@ -1,8 +1,9 @@
-package ui;
+package ui.panels;
 
 import model.Armor;
 import model.Item;
 import model.Weapon;
+import ui.StylingUtilities;
 
 import javax.swing.*;
 import java.awt.*;

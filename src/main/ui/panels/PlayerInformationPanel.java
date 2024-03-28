@@ -1,8 +1,11 @@
-package ui;
+package ui.panels;
 
 import model.Armor;
 import model.Player;
 import model.Weapon;
+import ui.Game;
+import ui.panels.EntityInformationPanel;
+import ui.panels.GamePanel;
 
 import javax.swing.*;
 
