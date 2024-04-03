@@ -1,9 +1,13 @@
 package ui;
 
+import model.EventLog;
+import model.LogPrinter;
 import ui.panels.GamePanel;
 import ui.panels.SplashScreenPanel;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 // Main class; displays splash screen and then instantiates and runs Game
 public class Main {
@@ -24,7 +28,18 @@ public class Main {
         GamePanel gamePanel = new GamePanel(game);
         gameFrame.setSize(WIDTH, HEIGHT);
         gameFrame.add(gamePanel);
+        gameFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                logEvents();
+            }
+        });
 
+        doIntroSequence(splashFrame, gameFrame);
+    }
+
+    // EFFECTS: shows splash screen and then goes to game frame
+    private static void doIntroSequence(JFrame splashFrame, JFrame gameFrame) {
         splashFrame.setVisible(true);
 
         try {
@@ -35,5 +50,10 @@ public class Main {
 
         splashFrame.setVisible(false);
         gameFrame.setVisible(true);
+    }
+
+    // EFFECTS: prints all Events in EventLog
+    private static void logEvents() {
+        LogPrinter.printLog(EventLog.getInstance());
     }
 }

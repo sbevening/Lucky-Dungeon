@@ -1,5 +1,6 @@
 package model;
 
+import com.sun.net.httpserver.Authenticator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.JsonWriter;
@@ -16,6 +17,7 @@ public class Inventory {
     // EFFECTS: creates inventory with set amount of inventory
     // slots and no items
     public Inventory(int slots) {
+        EventLog.getInstance().logEvent(new Event("New inventory initialized"));
         this.slots = slots;
         items = new ArrayList<Item>();
     }
@@ -24,6 +26,7 @@ public class Inventory {
     // EFFECTS: creates inventory with set amount of inventory
     // slots holding given list of items
     public Inventory(int slots, ArrayList<Item> items) {
+        EventLog.getInstance().logEvent(new Event("New inventory initialized"));
         this.slots = slots;
         this.items = items;
     }
@@ -71,11 +74,16 @@ public class Inventory {
     // returns true; otherwise, returns false and does not modify this. if item is null, returns
     // false and does not modify this.
     public boolean pickUpItem(Item item) {
+        Event event;
+        String itemName;
         if (items.size() >= slots) {
-            return false;
+            return false; // don't log message as no change was made
         } else if (item == null) {
-            return false;
+            return false; // don't log message as no change was made
         } else {
+            itemName = (item == null) ? "null" : item.getName();
+            event = new Event("Picked up item: " + itemName);
+            EventLog.getInstance().logEvent(event);
             items.add(item);
             return true;
         }
@@ -86,7 +94,16 @@ public class Inventory {
     // EFFECTS: removes first copy of given weapon from items
     // (item in list is compared to item parameter by Object.equals)
     public void dropItem(Item item) {
-        items.remove(item);
+        String itemName;
+        if (item == null) {
+            return;
+        }
+
+        itemName = item.getName();
+
+        if (items.remove(item)) {
+            EventLog.getInstance().logEvent(new Event("Removed item from inventory: " + itemName));
+        }
     }
 
     // EFFECTS: returns string representation of inventory. if empty,

@@ -27,18 +27,21 @@ public abstract class Entity {
     // by (incomingDamage - defence). if hitPoints are then below 0, they are
     // instead set to 0 and returns true; otherwise, returns false
     public Boolean takeHit(int incomingDamage) {
+        boolean died = false;
         if (incomingDamage > defence) {
             int newHitPoints = hitPoints - (incomingDamage - defence);
             if (newHitPoints <= 0) {
                 hitPoints = 0;
-                return true;
+                died = true;
+                EventLog.getInstance().logEvent(new Event(name + " died"));
             } else {
                 hitPoints = newHitPoints;
-                return false;
+                Event damageEvent = new Event(name + "'s hitpoints were reduced to " + hitPoints);
+                EventLog.getInstance().logEvent(damageEvent);
             }
-        } else {
-            return false;
         }
+
+        return died;
     }
 
     // MODIFIES: other

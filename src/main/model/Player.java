@@ -15,6 +15,7 @@ public class Player extends Entity {
     public Player(String name, int hp, int inventorySlots) {
         // attack is set to Dagger's attack; defence is set to T-Shirt's defence
         super(name, hp, 0, 2);
+        EventLog.getInstance().logEvent(new Event("New player initialized"));
         equippedArmor = new Armor("T-Shirt", 0);
         equippedWeapon = new Weapon("Dagger", 2, 10);
         inventory = new Inventory(inventorySlots);
@@ -26,6 +27,7 @@ public class Player extends Entity {
     public Player(String name, int hp, Inventory inventory) {
         // attack is set to 0 and defence is set to 0 because nothing equipped
         super(name, hp, 0, 0);
+        EventLog.getInstance().logEvent(new Event("New player initialized"));
         equippedArmor = new Armor("T-Shirt", 0);
         equippedWeapon = null;
         this.inventory = inventory;
@@ -55,6 +57,7 @@ public class Player extends Entity {
         inventory.dropItem(armor);
         inventory.pickUpItem(previousArmor);
         setDefence(armor.getDefence());
+        EventLog.getInstance().logEvent(new Event("Set equipped armor: " + equippedArmor.getName()));
     }
 
     public Weapon getEquippedWeapon() {
@@ -69,8 +72,10 @@ public class Player extends Entity {
         equippedWeapon = weapon;
         if (weapon == null) {
             setAttack(0);
+            EventLog.getInstance().logEvent(new Event("Equipped weapon set to null"));
         } else {
             setAttack(weapon.getAttack());
+            EventLog.getInstance().logEvent(new Event("Set equipped weapon: " + equippedWeapon));
         }
     }
 

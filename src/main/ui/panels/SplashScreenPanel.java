@@ -30,7 +30,7 @@ public class SplashScreenPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (image != null) {
-            Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+            Image scaledImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
             g.drawImage(scaledImage, 0, 0, this);
         }
     }

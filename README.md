@@ -48,3 +48,21 @@ interesting battles that lend to replayability.
 - You can locate my visual component by starting the application as it is shown as a splash screen upon launch.
 - You can save the state of my application by clicking on the button labelled "Save Game" while playing the game.
 - You can load a saved application state by clicking on the button labelled "Load Game" while playing the game.
+
+## Phase 4: Task 2 ##
+Tue Apr 02 23:21:48 PDT 2024
+New player initialized
+Tue Apr 02 23:21:48 PDT 2024
+New inventory initialized
+Tue Apr 02 23:21:54 PDT 2024
+Skeleton died
+Tue Apr 02 23:21:54 PDT 2024
+Picked up item: Leather Armor
+Tue Apr 02 23:22:01 PDT 2024
+Removed item from inventory: Leather Armor
+Tue Apr 02 23:22:01 PDT 2024
+Picked up item: T-Shirt
+Tue Apr 02 23:22:01 PDT 2024
+Set equipped armor: Leather Armor
+Tue Apr 02 23:22:03 PDT 2024
+Removed item from inventory: T-Shirt
