@@ -50,6 +50,7 @@ interesting battles that lend to replayability.
 - You can load a saved application state by clicking on the button labelled "Load Game" while playing the game.
 
 ## Phase 4: Task 2 ##
+
 Tue Apr 02 23:21:48 PDT 2024
 New player initialized
 Tue Apr 02 23:21:48 PDT 2024
@@ -66,3 +67,19 @@ Tue Apr 02 23:22:01 PDT 2024
 Set equipped armor: Leather Armor
 Tue Apr 02 23:22:03 PDT 2024
 Removed item from inventory: T-Shirt
+
+## Phase 4: Task 3 ##
+
+If I were to have time to refactor an aspect of the overall program design, I would modify the implementation of
+ItemPanel to be less dependent on InventoryPanel. Currently, the functionality of each ItemPanel on click to be
+selected is added to each panel individually in the drawOccupiedSlots method in InventoryPanel. This means that if
+the ItemPanel class is used in another class aside from InventoryPanel and also needs to be selected in a similar way,
+the functionality to do so would need to be manually implemented again as it is not hosted in ItemPanel.
+
+One way that this codependency could be minimized is by implementing a one-to-many bidirectional association with
+InventoryPanel (or potentially a new superclass designed for holding a collection of items) as the one and ItemPanel
+as the many. If ItemPanel is given a reference to its InventoryPanel, they could implement in their own class a
+mouse event handler that selects or deselects it and provides information on these events to their InventoryPanel
+reference. That InventoryPanel could then do whatever action is needed to the other ItemPanel instances in it; in
+this case, that action would be deselecting the previously selected item. This would remove the need to implement
+ItemPanel functionality in a different class from itself, InventoryPanel, and reduce coupling.
